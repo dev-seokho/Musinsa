@@ -71,4 +71,17 @@ public class MenuRepositoryTest {
         //then
         assertTrue(existsLink);
     }
+
+    @Test
+    @DisplayName("메뉴에 링크가 존재하지 않을 때 false 반환")
+    void doesNotExistsByLinkTest() {
+        //given
+        String link = "/top";
+
+        //when
+        boolean existsLink = menuRepository.existsByLink(link);
+
+        //then
+        assertFalse(existsLink);
+    }
 }
