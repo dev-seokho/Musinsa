@@ -57,4 +57,17 @@ public class SubMenuRepositoryTest {
         //then
         assertTrue(existsTitle);
     }
+
+    @Test
+    @DisplayName("서브 메뉴에 타이틀이 존재하지 않을 때 false 반환")
+    void doesNotExistsByTitleTest() {
+        //given
+        String title = "상의";
+
+        //when
+        boolean existsTitle = subMenuRepository.existsByTitle(title);
+
+        //then
+        assertFalse(existsTitle);
+    }
 }

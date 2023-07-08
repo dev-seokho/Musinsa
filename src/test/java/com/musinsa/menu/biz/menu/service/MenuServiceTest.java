@@ -56,7 +56,7 @@ public class MenuServiceTest {
 
     @Test
     @DisplayName("메뉴 등록 실패 - 메뉴 타이틀이 중복일 때")
-    void MenuCreationFailureWhenTitleIsDuplicateTest() {
+    void menuCreationFailureWhenTitleIsDuplicateTest() {
         //given
         MenuRequest menuRequest = MenuRequest.builder()
             .title("상의")
@@ -74,7 +74,7 @@ public class MenuServiceTest {
 
     @Test
     @DisplayName("메뉴 등록 실패 - 메뉴 링크가 중복일 때")
-    void MenuCreationFailureWhenLinkIsDuplicateTest() {
+    void menuCreationFailureWhenLinkIsDuplicateTest() {
         //given
         MenuRequest menuRequest = MenuRequest.builder()
             .title("상의")

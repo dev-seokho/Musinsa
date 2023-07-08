@@ -58,7 +58,7 @@ public class SubMenuServiceTest {
 
     @Test
     @DisplayName("서브 메뉴 등록 실패 - 존재하지 않는 메뉴 ID 일 때")
-    void SubMenuCreationFailureWhenDoesNotExistsMenuTest() {
+    void subMenuCreationFailureWhenDoesNotExistsMenuTest() {
         //given
         Long menuId = 1L;
         SubMenuRequest subMenuRequest = SubMenuRequest.builder()
@@ -76,7 +76,7 @@ public class SubMenuServiceTest {
 
     @Test
     @DisplayName("서브 메뉴 등록 실패 - 서브 메뉴 타이틀이 중복일 때")
-    void SubMenuCreationFailureWhenTitleIsDuplicateTest() {
+    void subMenuCreationFailureWhenTitleIsDuplicateTest() {
         //given
         Long menuId = 1L;
         SubMenuRequest subMenuRequest = SubMenuRequest.builder()
