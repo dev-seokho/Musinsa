@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 
 import com.musinsa.menu.biz.menu.domain.entity.Menu;
 import com.musinsa.menu.biz.menu.domain.service.MenuDomainService;
+import com.musinsa.menu.biz.menu.domain.service.SubMenuDomainService;
 import com.musinsa.menu.biz.menu.dto.request.MenuRequest;
 import com.musinsa.menu.biz.menu.dto.response.MenuResponse;
 import com.musinsa.menu.biz.menu.exception.DuplicateMenuLinkException;
@@ -27,6 +28,9 @@ public class MenuServiceTest {
 
     @Mock
     MenuDomainService menuDomainService;
+
+    @Mock
+    SubMenuDomainService subMenuDomainService;
 
     @Test
     @DisplayName("메뉴 등록 성공")
@@ -97,6 +101,9 @@ public class MenuServiceTest {
     void deleteMenuTest() {
         //given
         Long menuId = 1L;
+        Menu menu = Menu.builder().build();
+
+        when(menuDomainService.get(menuId)).thenReturn(menu);
 
         //when
         menuService.deleteMenu(menuId);

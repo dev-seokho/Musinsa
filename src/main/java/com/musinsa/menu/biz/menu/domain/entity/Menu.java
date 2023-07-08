@@ -54,4 +54,9 @@ public class Menu {
     @Builder.Default
     @OneToMany(mappedBy = "menu")
     private List<Banner> banners = new ArrayList<>();
+
+    public void updateMenu(String title, String link) {
+        this.title = title;
+        this.link = link;
+    }
 }

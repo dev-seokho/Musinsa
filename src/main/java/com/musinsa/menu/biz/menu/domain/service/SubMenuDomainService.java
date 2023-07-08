@@ -2,6 +2,7 @@ package com.musinsa.menu.biz.menu.domain.service;
 
 import com.musinsa.menu.biz.menu.domain.entity.SubMenu;
 import com.musinsa.menu.biz.menu.domain.repository.SubMenuRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,8 +19,12 @@ public class SubMenuDomainService {
         return subMenuRepository.save(subMenu).getId();
     }
 
+    @Transactional
+    public void deleteAll(final List<SubMenu> subMenus) {
+        subMenuRepository.deleteAll(subMenus);
+    }
+
     public boolean existsByTitle(final String title) {
         return subMenuRepository.existsByTitle(title);
     }
-
 }
