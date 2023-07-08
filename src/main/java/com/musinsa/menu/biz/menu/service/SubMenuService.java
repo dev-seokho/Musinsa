@@ -5,6 +5,7 @@ import com.musinsa.menu.biz.menu.domain.service.MenuDomainService;
 import com.musinsa.menu.biz.menu.domain.service.SubMenuDomainService;
 import com.musinsa.menu.biz.menu.dto.request.SubMenuRequest;
 import com.musinsa.menu.biz.menu.dto.response.SubMenuResponse;
+import com.musinsa.menu.biz.menu.exception.AlreadyExistsMenuException;
 import com.musinsa.menu.biz.menu.exception.DuplicateSubMenuTitleException;
 import com.musinsa.menu.biz.menu.exception.NoSuchMenuException;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class SubMenuService {
     @Transactional
     public SubMenuResponse createSubMenu(SubMenuRequest subMenuRequest, Long menuId) {
         if (!menuDomainService.existsById(menuId)) {
-            throw new NoSuchMenuException("존재하지 않는 메뉴 ID 입니다.");
+            throw new AlreadyExistsMenuException("이미 존재하는 메뉴 ID 입니다.");
         }
 
         if (subMenuDomainService.existsByTitle(subMenuRequest.title())) {

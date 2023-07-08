@@ -1,5 +1,6 @@
 package com.musinsa.menu.global.exception;
 
+import com.musinsa.menu.biz.menu.exception.AlreadyExistsMenuException;
 import com.musinsa.menu.biz.menu.exception.DuplicateMenuLinkException;
 import com.musinsa.menu.biz.menu.exception.DuplicateMenuTitleException;
 import com.musinsa.menu.biz.menu.exception.DuplicateSubMenuTitleException;
@@ -31,6 +32,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DuplicateMenuTitleException.class)
     public ErrorMessage handleDuplicationMenuTitleException(
         DuplicateMenuTitleException e
+    ) {
+        log.error(e.getMessage(), e);
+        return new ErrorMessage(e.getMessage(), getSimpleName(e));
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(AlreadyExistsMenuException.class)
+    public ErrorMessage handleAlreadyExistsMenuException(
+        AlreadyExistsMenuException e
     ) {
         log.error(e.getMessage(), e);
         return new ErrorMessage(e.getMessage(), getSimpleName(e));
