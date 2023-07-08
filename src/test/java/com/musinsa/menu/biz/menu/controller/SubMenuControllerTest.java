@@ -51,4 +51,24 @@ public class SubMenuControllerTest {
             // then
             .andExpect(status().isCreated());
     }
+
+    @Test
+    @DisplayName("서브 메뉴 등록 실패 - 타이틀이 공백일 때")
+    void subMenuCreationFailureWhenTitleIsBlankTest() throws Exception {
+        //given
+        Long menuId = 1L;
+        SubMenuRequest subMenuRequest = SubMenuRequest.builder()
+            .title(" ")
+            .build();
+
+        String content = objectMapper.writeValueAsString(subMenuRequest);
+
+        //when
+        mockMvc.perform(post("/menus/" + menuId +"/sub-menus")
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+            // then
+            .andExpect(status().isBadRequest());
+    }
 }
