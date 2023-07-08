@@ -47,9 +47,11 @@ public class Menu {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    @Builder.Default
     @OneToMany(mappedBy = "menu")
     private List<SubMenu> subMenus = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "menu")
     private List<Banner> banners = new ArrayList<>();
 }

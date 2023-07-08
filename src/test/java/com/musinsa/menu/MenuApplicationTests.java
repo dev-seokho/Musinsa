@@ -10,4 +10,9 @@ class MenuApplicationTests {
 	void contextLoads() {
 	}
 
+	@Test
+	void main() {
+		MenuApplication.main(new String[] {});
+	}
+
 }
