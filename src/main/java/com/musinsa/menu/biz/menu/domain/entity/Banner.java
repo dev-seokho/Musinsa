@@ -48,5 +48,4 @@ public class Banner {
     @Column(name = "updated_at")
     @LastModifiedDate
     private LocalDateTime updatedAt;
-
 }
