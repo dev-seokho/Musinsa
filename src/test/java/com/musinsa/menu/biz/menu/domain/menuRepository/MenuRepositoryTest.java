@@ -1,5 +1,6 @@
 package com.musinsa.menu.biz.menu.domain.menuRepository;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.boot.jdbc.EmbeddedDatabaseConnection.H2;
 
@@ -37,5 +38,18 @@ public class MenuRepositoryTest {
 
         //then
         assertTrue(existTitle);
+    }
+
+    @Test
+    @DisplayName("메뉴에 이미 타이틀이 존재하지 않을 때 false 반환")
+    void doesNotExistsByTitleTest() {
+        //given
+        String title = "상의";
+
+        //when
+        boolean existTitle = menuRepository.existsByTitle(title);
+
+        //then
+        assertFalse(existTitle);
     }
 }
