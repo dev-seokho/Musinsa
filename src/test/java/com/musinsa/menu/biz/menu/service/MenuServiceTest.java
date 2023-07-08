@@ -10,6 +10,7 @@ import com.musinsa.menu.biz.menu.domain.entity.Menu;
 import com.musinsa.menu.biz.menu.domain.service.MenuDomainService;
 import com.musinsa.menu.biz.menu.domain.service.SubMenuDomainService;
 import com.musinsa.menu.biz.menu.dto.request.MenuRequest;
+import com.musinsa.menu.biz.menu.dto.request.UpdateMenuRequest;
 import com.musinsa.menu.biz.menu.dto.response.MenuResponse;
 import com.musinsa.menu.biz.menu.exception.DuplicateMenuLinkException;
 import com.musinsa.menu.biz.menu.exception.DuplicateMenuTitleException;
@@ -94,6 +95,39 @@ public class MenuServiceTest {
             //when
             () -> menuService.createMenu(menuRequest)
         );
+    }
+
+    @Test
+    @DisplayName("메뉴 수정 성공")
+    void updateMenuTest() {
+        //given
+        Long menuId = 1L;
+        UpdateMenuRequest updateMenuRequest = UpdateMenuRequest.builder()
+            .title("상의")
+            .link("/top")
+            .build();
+
+        Menu menu = Menu.builder()
+            .id(menuId)
+            .title("하의")
+            .link("/bottom")
+            .build();
+
+        when(menuDomainService.existsByTitle(updateMenuRequest.title())).thenReturn(false);
+        when(menuDomainService.existsByLink(updateMenuRequest.link())).thenReturn(false);
+        when(menuDomainService.get(menuId)).thenReturn(menu);
+
+        MenuResponse expectMenuResponse = MenuResponse.builder()
+            .id(menuId)
+            .title(updateMenuRequest.title())
+            .link(updateMenuRequest.link())
+            .build();
+
+        //when
+        MenuResponse menuResponse = menuService.updateMenu(updateMenuRequest, menuId);
+
+        //then
+        assertThat(menuResponse).isEqualTo(expectMenuResponse);
     }
 
     @Test
