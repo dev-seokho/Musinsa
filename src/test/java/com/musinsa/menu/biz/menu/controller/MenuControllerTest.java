@@ -1,11 +1,13 @@
 package com.musinsa.menu.biz.menu.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.musinsa.menu.biz.menu.dto.request.MenuRequest;
+import com.musinsa.menu.biz.menu.dto.request.UpdateMenuRequest;
 import com.musinsa.menu.biz.menu.service.MenuService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -111,6 +113,27 @@ public class MenuControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
             // then
             .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("메뉴 수정 성공")
+    void updateMenuSuccessTest() throws Exception {
+        //given
+        Long menuId = 1L;
+        UpdateMenuRequest updateMenuRequest = UpdateMenuRequest.builder()
+            .title("상의")
+            .link("/top")
+            .build();
+
+        String content = objectMapper.writeValueAsString(updateMenuRequest);
+
+        //when
+        mockMvc.perform(patch("/menus/" + menuId)
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+            // then
+            .andExpect(status().isOk());
     }
 
     @Test
