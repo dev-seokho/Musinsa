@@ -31,9 +31,8 @@ public class Banner {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "menu_Id")
-    private Menu menu;
+    @Column(name = "menu_id", nullable = false)
+    private Long menuId;
 
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
@@ -48,4 +47,8 @@ public class Banner {
     @Column(name = "updated_at")
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "menu_Id", insertable = false, updatable = false)
+    private Menu menu;
 }

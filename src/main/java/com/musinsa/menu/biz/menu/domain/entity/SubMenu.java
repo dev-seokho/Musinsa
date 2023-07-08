@@ -13,12 +13,14 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Builder
+@Getter
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,9 +32,8 @@ public class SubMenu {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "menu_Id")
-    private Menu menu;
+    @Column(name = "menu_id", nullable = false)
+    private Long menuId;
 
     @Column(name = "title", nullable = false, unique = true)
     private String title;
@@ -45,4 +46,7 @@ public class SubMenu {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "menu_Id", insertable = false, updatable = false)
+    private Menu menu;
 }
