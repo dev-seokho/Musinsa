@@ -1,5 +1,6 @@
 package com.musinsa.menu.biz.menu.controller;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -112,4 +113,15 @@ public class MenuControllerTest {
             .andExpect(status().isBadRequest());
     }
 
+    @Test
+    @DisplayName("메뉴 삭제 성공")
+    void deleteMenuSuccessTest() throws Exception {
+        //given
+        Long menuId = 1L;
+
+        //when
+        mockMvc.perform(delete("/menus/" + menuId))
+            // then
+            .andExpect(status().isOk());
+    }
 }
