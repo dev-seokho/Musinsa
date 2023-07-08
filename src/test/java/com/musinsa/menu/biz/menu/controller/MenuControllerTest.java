@@ -4,7 +4,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.musinsa.menu.biz.menu.domain.service.MenuDomainService;
 import com.musinsa.menu.biz.menu.dto.request.MenuRequest;
 import com.musinsa.menu.biz.menu.service.MenuService;
 import org.junit.jupiter.api.DisplayName;
@@ -80,6 +79,26 @@ public class MenuControllerTest {
         MenuRequest menuRequest = MenuRequest.builder()
             .title("상의")
             .link(" ")
+            .build();
+
+        String content = objectMapper.writeValueAsString(menuRequest);
+
+        //when
+        mockMvc.perform(post("/menus")
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+            // then
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("메뉴 등록 실패 - 링크 형식이 잘못됐을 때")
+    void menuCreationFailureWhenLinkIsInvalidTest() throws Exception {
+        //given
+        MenuRequest menuRequest = MenuRequest.builder()
+            .title("상의")
+            .link("top")
             .build();
 
         String content = objectMapper.writeValueAsString(menuRequest);
