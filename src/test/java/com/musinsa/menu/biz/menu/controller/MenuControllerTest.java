@@ -35,7 +35,7 @@ public class MenuControllerTest {
 
     @Test
     @DisplayName("메뉴 등록 성공")
-    public void createMenuTest() throws Exception {
+    void createMenuSuccessTest() throws Exception {
         //given
         MenuRequest menuRequest = MenuRequest.builder()
             .title("상의")
@@ -51,6 +51,26 @@ public class MenuControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
             // then
             .andExpect(status().isCreated());
+    }
+
+    @Test
+    @DisplayName("메뉴 등록 실패 - 타이틀이 공백일 때")
+    void menuCreationFailureWhenTitleIsBlankTest() throws Exception {
+        //given
+        MenuRequest menuRequest = MenuRequest.builder()
+            .title(" ")
+            .link("/top")
+            .build();
+
+        String content = objectMapper.writeValueAsString(menuRequest);
+
+        //when
+        mockMvc.perform(post("/menus")
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+            // then
+            .andExpect(status().isBadRequest());
     }
 
 }
