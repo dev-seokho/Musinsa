@@ -29,9 +29,8 @@ public class SubMenuRepositoryTest {
 
     @BeforeEach
     void beforeEach() {
-        String title = "상의";
         Menu menu = Menu.builder()
-            .title(title)
+            .title("상의")
             .link("/top")
             .build();
 
@@ -42,7 +41,7 @@ public class SubMenuRepositoryTest {
     @DisplayName("서브 메뉴에 이미 타이틀이 존재할 때 true 반환")
     void existsByTitleTest() {
         //given
-        String title = "상의";
+        String title = "니트";
 
         SubMenu subMenu = SubMenu.builder()
             .menuId(this.menuId)
@@ -62,7 +61,7 @@ public class SubMenuRepositoryTest {
     @DisplayName("서브 메뉴에 타이틀이 존재하지 않을 때 false 반환")
     void doesNotExistsByTitleTest() {
         //given
-        String title = "상의";
+        String title = "니트";
 
         //when
         boolean existsTitle = subMenuRepository.existsByTitle(title);

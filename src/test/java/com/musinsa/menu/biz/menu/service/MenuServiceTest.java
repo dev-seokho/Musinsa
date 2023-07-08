@@ -3,6 +3,7 @@ package com.musinsa.menu.biz.menu.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.musinsa.menu.biz.menu.domain.entity.Menu;
@@ -89,5 +90,18 @@ public class MenuServiceTest {
             //when
             () -> menuService.createMenu(menuRequest)
         );
+    }
+
+    @Test
+    @DisplayName("메뉴 삭제 성공 행위 검증 테스트")
+    void deleteMenuTest() {
+        //given
+        Long menuId = 1L;
+
+        //when
+        menuService.deleteMenu(menuId);
+
+        //then
+        verify(menuDomainService).findById(menuId);
     }
 }

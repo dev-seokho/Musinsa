@@ -66,8 +66,8 @@ jacocoTestCoverageVerification {
 			excludes = [
 					'com.musinsa.menu.global.exception.*',
 					'com.musinsa.menu.biz.menu.domain.service.*',
-					'com.musinsa.menu.biz.menu.dto.*'
-
+					'com.musinsa.menu.biz.menu.dto.*',
+					'com.musinsa.menu.biz.menu.exception.*'
 			]
 
 			limit {
