@@ -28,28 +28,47 @@ public class MenuRepositoryTest {
         String title = "상의";
         Menu menu = Menu.builder()
             .title(title)
-            .link("/link")
+            .link("/top")
             .build();
 
         menuRepository.save(menu);
 
         //when
-        boolean existTitle = menuRepository.existsByTitle(title);
+        boolean existsTitle = menuRepository.existsByTitle(title);
 
         //then
-        assertTrue(existTitle);
+        assertTrue(existsTitle);
     }
 
     @Test
-    @DisplayName("메뉴에 이미 타이틀이 존재하지 않을 때 false 반환")
+    @DisplayName("메뉴에 타이틀이 존재하지 않을 때 false 반환")
     void doesNotExistsByTitleTest() {
         //given
         String title = "상의";
 
         //when
-        boolean existTitle = menuRepository.existsByTitle(title);
+        boolean existsTitle = menuRepository.existsByTitle(title);
 
         //then
-        assertFalse(existTitle);
+        assertFalse(existsTitle);
+    }
+
+    @Test
+    @DisplayName("메뉴에 이미 링크가 존재할 때 true 반환")
+    void existsByLinkTest() {
+        //given
+        String link = "/top";
+        Menu menu = Menu.builder()
+            .title("상의")
+            .link(link)
+            .build();
+
+        menuRepository.save(menu);
+
+        //when
+        boolean existsLink = menuRepository.existsByLink(link);
+
+        //then
+        assertTrue(existsLink);
     }
 }
