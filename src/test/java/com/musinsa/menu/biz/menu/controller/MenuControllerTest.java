@@ -179,6 +179,27 @@ public class MenuControllerTest {
     }
 
     @Test
+    @DisplayName("메뉴 수정 실패 - 링크형식이 잘못됐을 때")
+    void menuUpdateFailureWhenLinkIsInvalidTest() throws Exception {
+        //given
+        Long menuId = 1L;
+        UpdateMenuRequest menuRequest = UpdateMenuRequest.builder()
+            .title("상의")
+            .link("top")
+            .build();
+
+        String content = objectMapper.writeValueAsString(menuRequest);
+
+        //when
+        mockMvc.perform(patch("/menus/" + menuId)
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+            // then
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
     @DisplayName("메뉴 삭제 성공")
     void deleteMenuSuccessTest() throws Exception {
         //given
