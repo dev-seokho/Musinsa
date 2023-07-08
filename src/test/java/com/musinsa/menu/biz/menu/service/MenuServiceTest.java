@@ -9,6 +9,7 @@ import com.musinsa.menu.biz.menu.domain.entity.Menu;
 import com.musinsa.menu.biz.menu.domain.service.MenuDomainService;
 import com.musinsa.menu.biz.menu.dto.request.MenuRequest;
 import com.musinsa.menu.biz.menu.dto.response.MenuResponse;
+import com.musinsa.menu.biz.menu.exception.DuplicateMenuLinkException;
 import com.musinsa.menu.biz.menu.exception.DuplicateMenuTitleException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -66,6 +67,25 @@ public class MenuServiceTest {
 
         //then
         assertThrows(DuplicateMenuTitleException.class,
+            //when
+            () -> menuService.createMenu(menuRequest)
+        );
+    }
+
+    @Test
+    @DisplayName("메뉴 등록 실패 - 메뉴 링크가 중복일 때")
+    void MenuCreationFailureWhenLinkIsDuplicateTest() {
+        //given
+        MenuRequest menuRequest = MenuRequest.builder()
+            .title("상의")
+            .link("/link")
+            .build();
+
+        when(menuDomainService.existsByTitle(menuRequest.title())).thenReturn(false);
+        when(menuDomainService.existsByLink(menuRequest.link())).thenReturn(true);
+
+        //then
+        assertThrows(DuplicateMenuLinkException.class,
             //when
             () -> menuService.createMenu(menuRequest)
         );
