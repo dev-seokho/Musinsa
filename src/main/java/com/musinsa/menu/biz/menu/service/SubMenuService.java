@@ -7,7 +7,6 @@ import com.musinsa.menu.biz.menu.dto.request.SubMenuRequest;
 import com.musinsa.menu.biz.menu.dto.response.SubMenuResponse;
 import com.musinsa.menu.biz.menu.exception.AlreadyExistsMenuException;
 import com.musinsa.menu.biz.menu.exception.DuplicateSubMenuTitleException;
-import com.musinsa.menu.biz.menu.exception.NoSuchMenuException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
