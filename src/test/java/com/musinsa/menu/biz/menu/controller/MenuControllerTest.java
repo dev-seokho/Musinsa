@@ -137,6 +137,27 @@ public class MenuControllerTest {
     }
 
     @Test
+    @DisplayName("메뉴 수정 실패 - 타이틀이 공백일 때")
+    void menuUpdateFailureWhenTitleIsBlankTest() throws Exception {
+        //given
+        Long menuId = 1L;
+        UpdateMenuRequest menuRequest = UpdateMenuRequest.builder()
+            .title(" ")
+            .link("/top")
+            .build();
+
+        String content = objectMapper.writeValueAsString(menuRequest);
+
+        //when
+        mockMvc.perform(patch("/menus/" + menuId)
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+            // then
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
     @DisplayName("메뉴 삭제 성공")
     void deleteMenuSuccessTest() throws Exception {
         //given
