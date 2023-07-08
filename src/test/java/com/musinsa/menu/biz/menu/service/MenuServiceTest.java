@@ -148,6 +148,27 @@ public class MenuServiceTest {
             () -> menuService.updateMenu(updateMenuRequest, menuId)
         );
     }
+
+    @Test
+    @DisplayName("메뉴 수정 실패 - 메뉴 타이틀이 중복일 때")
+    void menuUpdateFailureWhenLinkIsDuplicateTest() {
+        //given
+        Long menuId = 1L;
+        UpdateMenuRequest updateMenuRequest = UpdateMenuRequest.builder()
+            .title("상의")
+            .link("/link")
+            .build();
+
+        when(menuDomainService.existsByTitle(updateMenuRequest.title())).thenReturn(false);
+        when(menuDomainService.existsByLink(updateMenuRequest.link())).thenReturn(true);
+
+        //then
+        assertThrows(DuplicateMenuLinkException.class,
+            //when
+            () -> menuService.updateMenu(updateMenuRequest, menuId)
+        );
+    }
+
     @Test
     @DisplayName("메뉴 삭제 성공 행위 검증 테스트")
     void deleteMenuTest() {
