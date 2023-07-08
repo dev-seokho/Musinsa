@@ -2,7 +2,9 @@ package com.musinsa.menu.biz.menu.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.Builder;
 
+@Builder
 public record MenuRequest(
     @NotBlank(message = "메뉴 타이틀은 공백일 수 없습니다.")
     String title,
