@@ -1,6 +1,7 @@
 package com.musinsa.menu.biz.menu.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -9,6 +10,7 @@ import com.musinsa.menu.biz.menu.domain.service.MenuDomainService;
 import com.musinsa.menu.biz.menu.domain.service.SubMenuDomainService;
 import com.musinsa.menu.biz.menu.dto.request.SubMenuRequest;
 import com.musinsa.menu.biz.menu.dto.response.SubMenuResponse;
+import com.musinsa.menu.biz.menu.exception.DuplicateSubMenuTitleException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -53,5 +55,23 @@ public class SubMenuServiceTest {
         assertThat(subMenuResponse).isEqualTo(expectMenuResponse);
     }
 
+    @Test
+    @DisplayName("서브 메뉴 등록 실패 - 서브 메뉴 타이틀이 중복일 때")
+    void MenuCreationFailureWhenTitleIsDuplicateTest() {
+        //given
+        Long menuId = 1L;
+        SubMenuRequest subMenuRequest = SubMenuRequest.builder()
+            .title("상의")
+            .build();
+
+        when(menuDomainService.existsById(menuId)).thenReturn(true);
+        when(subMenuDomainService.existsByTitle(subMenuRequest.title())).thenReturn(true);
+
+        //then
+        assertThrows(DuplicateSubMenuTitleException.class,
+            //when
+            () -> subMenuService.createSubMenu(subMenuRequest, menuId)
+        );
+    }
 
 }
