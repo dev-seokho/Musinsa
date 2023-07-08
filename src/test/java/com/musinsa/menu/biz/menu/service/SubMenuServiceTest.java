@@ -10,6 +10,7 @@ import com.musinsa.menu.biz.menu.domain.service.MenuDomainService;
 import com.musinsa.menu.biz.menu.domain.service.SubMenuDomainService;
 import com.musinsa.menu.biz.menu.dto.request.SubMenuRequest;
 import com.musinsa.menu.biz.menu.dto.response.SubMenuResponse;
+import com.musinsa.menu.biz.menu.exception.AlreadyExistsMenuException;
 import com.musinsa.menu.biz.menu.exception.DuplicateSubMenuTitleException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,7 +31,7 @@ public class SubMenuServiceTest {
 
     @Test
     @DisplayName("서브 메뉴 등록 성공")
-    void createMenuTest() {
+    void createSubMenuTest() {
         //given
         Long menuId = 1L;
         Long subMenuId = 1L;
@@ -56,8 +57,26 @@ public class SubMenuServiceTest {
     }
 
     @Test
+    @DisplayName("서브 메뉴 등록 실패 - 존재하지 않는 메뉴 ID 일 때")
+    void SubMenuCreationFailureWhenDoesNotExistsMenuTest() {
+        //given
+        Long menuId = 1L;
+        SubMenuRequest subMenuRequest = SubMenuRequest.builder()
+            .title("상의")
+            .build();
+
+        when(menuDomainService.existsById(menuId)).thenReturn(false);
+
+        //then
+        assertThrows(AlreadyExistsMenuException.class,
+            //when
+            () -> subMenuService.createSubMenu(subMenuRequest, menuId)
+        );
+    }
+
+    @Test
     @DisplayName("서브 메뉴 등록 실패 - 서브 메뉴 타이틀이 중복일 때")
-    void MenuCreationFailureWhenTitleIsDuplicateTest() {
+    void SubMenuCreationFailureWhenTitleIsDuplicateTest() {
         //given
         Long menuId = 1L;
         SubMenuRequest subMenuRequest = SubMenuRequest.builder()
@@ -73,5 +92,4 @@ public class SubMenuServiceTest {
             () -> subMenuService.createSubMenu(subMenuRequest, menuId)
         );
     }
-
 }
