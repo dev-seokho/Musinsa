@@ -102,6 +102,6 @@ public class MenuServiceTest {
         menuService.deleteMenu(menuId);
 
         //then
-        verify(menuDomainService).findById(menuId);
+        verify(menuDomainService).get(menuId);
     }
 }

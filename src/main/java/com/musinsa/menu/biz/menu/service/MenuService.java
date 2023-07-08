@@ -41,7 +41,7 @@ public class MenuService {
 
     @Transactional
     public void deleteMenu(Long menuId) {
-        Menu menu = menuDomainService.findById(menuId);
+        Menu menu = menuDomainService.get(menuId);
         menuDomainService.delete(menu);
     }
 }

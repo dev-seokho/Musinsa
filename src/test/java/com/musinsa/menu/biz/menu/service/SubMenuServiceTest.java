@@ -39,7 +39,7 @@ public class SubMenuServiceTest {
             .title("니트")
             .build();
 
-        when(menuDomainService.existsById(menuId)).thenReturn(true);
+        when(menuDomainService.exists(menuId)).thenReturn(true);
         when(subMenuDomainService.existsByTitle(subMenuRequest.title())).thenReturn(false);
         when(subMenuDomainService.save(any(SubMenu.class))).thenReturn(subMenuId);
 
@@ -65,7 +65,7 @@ public class SubMenuServiceTest {
             .title("상의")
             .build();
 
-        when(menuDomainService.existsById(menuId)).thenReturn(false);
+        when(menuDomainService.exists(menuId)).thenReturn(false);
 
         //then
         assertThrows(AlreadyExistsMenuException.class,
@@ -83,7 +83,7 @@ public class SubMenuServiceTest {
             .title("상의")
             .build();
 
-        when(menuDomainService.existsById(menuId)).thenReturn(true);
+        when(menuDomainService.exists(menuId)).thenReturn(true);
         when(subMenuDomainService.existsByTitle(subMenuRequest.title())).thenReturn(true);
 
         //then

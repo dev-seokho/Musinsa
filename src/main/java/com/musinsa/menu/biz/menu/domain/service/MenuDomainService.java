@@ -32,11 +32,11 @@ public class MenuDomainService {
         return menuRepository.existsByLink(link);
     }
 
-    public boolean existsById(final Long id) {
+    public boolean exists(final Long id) {
         return menuRepository.existsById(id);
     }
 
-    public Menu findById(final Long id) {
+    public Menu get(final Long id) {
         return menuRepository.findById(id).orElseThrow(
             () -> new NoSuchMenuException("존재하지 않는 메뉴 ID 입니다.")
         );

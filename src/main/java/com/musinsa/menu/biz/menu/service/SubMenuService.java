@@ -20,7 +20,7 @@ public class SubMenuService {
 
     @Transactional
     public SubMenuResponse createSubMenu(SubMenuRequest subMenuRequest, Long menuId) {
-        if (!menuDomainService.existsById(menuId)) {
+        if (!menuDomainService.exists(menuId)) {
             throw new AlreadyExistsMenuException("이미 존재하는 메뉴 ID 입니다.");
         }
 
