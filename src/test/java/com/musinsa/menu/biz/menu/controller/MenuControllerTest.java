@@ -73,4 +73,24 @@ public class MenuControllerTest {
             .andExpect(status().isBadRequest());
     }
 
+    @Test
+    @DisplayName("메뉴 등록 실패 - 링크가 공백일 때")
+    void menuCreationFailureWhenLinkIsBlankTest() throws Exception {
+        //given
+        MenuRequest menuRequest = MenuRequest.builder()
+            .title("상의")
+            .link(" ")
+            .build();
+
+        String content = objectMapper.writeValueAsString(menuRequest);
+
+        //when
+        mockMvc.perform(post("/menus")
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+            // then
+            .andExpect(status().isBadRequest());
+    }
+
 }
