@@ -26,7 +26,6 @@ public class SubMenuController {
         @PathVariable Long menuId
     ) {
         SubMenuResponse subMenuResponse = subMenuService.createSubMenu(subMenuRequest, menuId);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(subMenuResponse);
     }
 }

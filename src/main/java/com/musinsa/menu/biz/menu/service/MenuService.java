@@ -38,4 +38,10 @@ public class MenuService {
             .link(menu.getLink())
             .build();
     }
+
+    @Transactional
+    public void deleteMenu(Long menuId) {
+        Menu menu = menuDomainService.findById(menuId);
+        menuDomainService.delete(menu);
+    }
 }

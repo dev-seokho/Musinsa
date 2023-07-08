@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class SubMenuDomainService {
 
@@ -17,7 +18,6 @@ public class SubMenuDomainService {
         return subMenuRepository.save(subMenu).getId();
     }
 
-    @Transactional(readOnly = true)
     public boolean existsByTitle(final String title) {
         return subMenuRepository.existsByTitle(title);
     }
