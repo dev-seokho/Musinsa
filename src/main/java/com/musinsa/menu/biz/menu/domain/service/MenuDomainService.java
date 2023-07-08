@@ -18,12 +18,12 @@ public class MenuDomainService {
     }
 
     @Transactional(readOnly = true)
-    public boolean existsByTitle(String title) {
+    public boolean existsByTitle(final String title) {
         return menuRepository.existsByTitle(title);
     }
 
     @Transactional(readOnly = true)
-    public boolean existsByLink(String link) {
+    public boolean existsByLink(final String link) {
         return menuRepository.existsByLink(link);
     }
 }
