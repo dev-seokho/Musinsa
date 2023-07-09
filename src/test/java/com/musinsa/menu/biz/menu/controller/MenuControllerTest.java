@@ -3,6 +3,7 @@ package com.musinsa.menu.biz.menu.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -114,6 +115,18 @@ public class MenuControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
             // then
             .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("단일 메뉴 조회 성공")
+    void getMenuSuccessTest() throws Exception {
+        //given
+        Long menuId = 1L;
+
+        //when
+        mockMvc.perform(get("/menus/" + menuId))
+            //then
+            .andExpect(status().isOk());
     }
 
     @Test

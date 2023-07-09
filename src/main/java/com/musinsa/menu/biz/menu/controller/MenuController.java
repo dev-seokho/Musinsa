@@ -61,7 +61,7 @@ public class MenuController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PatchMapping("/{menuId}/banner")
+    @PatchMapping("/{menuId}/banners")
     public ResponseEntity<UpdateBannerResponse> updateBanner(
         @RequestBody @Valid UpdateBannerRequest updateBannerRequest,
         @PathVariable Long menuId
