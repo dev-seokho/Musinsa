@@ -9,10 +9,12 @@ import com.musinsa.menu.biz.menu.dto.request.UpdateBannerRequest;
 import com.musinsa.menu.biz.menu.dto.request.UpdateMenuRequest;
 import com.musinsa.menu.biz.menu.dto.response.CreateMenuResponse;
 import com.musinsa.menu.biz.menu.dto.response.MenuResponse;
+import com.musinsa.menu.biz.menu.dto.response.SubMenuResponse;
 import com.musinsa.menu.biz.menu.dto.response.UpdateBannerResponse;
 import com.musinsa.menu.biz.menu.dto.response.UpdateMenuResponse;
 import com.musinsa.menu.biz.menu.exception.DuplicateMenuLinkException;
 import com.musinsa.menu.biz.menu.exception.DuplicateMenuTitleException;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -50,8 +52,28 @@ public class MenuService {
 
     @Transactional(readOnly = true)
     public MenuResponse getMenu(Long menuId) {
+        Menu menu = menuDomainService.get(menuId);
+        List<SubMenu> subMenus = menu.getSubMenus();
 
-        return MenuResponse.builder().build();
+        List<SubMenuResponse> subMenuResponses = new ArrayList<>();
+        for (SubMenu subMenu : subMenus
+        ) {
+            subMenuResponses.add(
+                SubMenuResponse.builder()
+                    .id(subMenu.getId())
+                    .menuId(subMenu.getMenuId())
+                    .title(subMenu.getTitle())
+                    .build()
+            );
+        }
+
+        return MenuResponse.builder()
+            .id(menu.getId())
+            .title(menu.getTitle())
+            .link(menu.getLink())
+            .bannerImageUrl(menu.getBannerImageUrl())
+            .subMenuResponses(subMenuResponses)
+            .build();
     }
 
     @Transactional
