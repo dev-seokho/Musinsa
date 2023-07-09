@@ -4,7 +4,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.musinsa.menu.biz.menu.dto.request.SubMenuRequest;
+import com.musinsa.menu.biz.menu.dto.request.CreateSubMenuRequest;
 import com.musinsa.menu.biz.menu.service.SubMenuService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,11 +37,11 @@ public class SubMenuControllerTest {
     void createSubMenuSuccessTest() throws Exception {
         //given
         Long menuId = 1L;
-        SubMenuRequest subMenuRequest = SubMenuRequest.builder()
+        CreateSubMenuRequest createSubMenuRequest = CreateSubMenuRequest.builder()
             .title("니트")
             .build();
 
-        String content = objectMapper.writeValueAsString(subMenuRequest);
+        String content = objectMapper.writeValueAsString(createSubMenuRequest);
 
         //when
         mockMvc.perform(post("/menus/" + menuId +"/sub-menus")
@@ -57,11 +57,11 @@ public class SubMenuControllerTest {
     void subMenuCreationFailureWhenTitleIsBlankTest() throws Exception {
         //given
         Long menuId = 1L;
-        SubMenuRequest subMenuRequest = SubMenuRequest.builder()
+        CreateSubMenuRequest createSubMenuRequest = CreateSubMenuRequest.builder()
             .title(" ")
             .build();
 
-        String content = objectMapper.writeValueAsString(subMenuRequest);
+        String content = objectMapper.writeValueAsString(createSubMenuRequest);
 
         //when
         mockMvc.perform(post("/menus/" + menuId +"/sub-menus")

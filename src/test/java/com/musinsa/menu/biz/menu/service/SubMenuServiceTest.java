@@ -8,8 +8,8 @@ import static org.mockito.Mockito.when;
 import com.musinsa.menu.biz.menu.domain.entity.SubMenu;
 import com.musinsa.menu.biz.menu.domain.service.MenuDomainService;
 import com.musinsa.menu.biz.menu.domain.service.SubMenuDomainService;
-import com.musinsa.menu.biz.menu.dto.request.SubMenuRequest;
-import com.musinsa.menu.biz.menu.dto.response.SubMenuResponse;
+import com.musinsa.menu.biz.menu.dto.request.CreateSubMenuRequest;
+import com.musinsa.menu.biz.menu.dto.response.CreateSubMenuResponse;
 import com.musinsa.menu.biz.menu.exception.AlreadyExistsMenuException;
 import com.musinsa.menu.biz.menu.exception.DuplicateSubMenuTitleException;
 import org.junit.jupiter.api.DisplayName;
@@ -35,25 +35,26 @@ public class SubMenuServiceTest {
         //given
         Long menuId = 1L;
         Long subMenuId = 1L;
-        SubMenuRequest subMenuRequest = SubMenuRequest.builder()
+        CreateSubMenuRequest createSubMenuRequest = CreateSubMenuRequest.builder()
             .title("니트")
             .build();
 
         when(menuDomainService.exists(menuId)).thenReturn(true);
-        when(subMenuDomainService.existsByTitle(subMenuRequest.title())).thenReturn(false);
+        when(subMenuDomainService.existsByTitle(createSubMenuRequest.title())).thenReturn(false);
         when(subMenuDomainService.save(any(SubMenu.class))).thenReturn(subMenuId);
 
-        SubMenuResponse expectMenuResponse = SubMenuResponse.builder()
+        CreateSubMenuResponse expectMenuResponse = CreateSubMenuResponse.builder()
             .id(subMenuId)
             .menuId(menuId)
-            .title(subMenuRequest.title())
+            .title(createSubMenuRequest.title())
             .build();
 
         //when
-        SubMenuResponse subMenuResponse = subMenuService.createSubMenu(subMenuRequest, menuId);
+        CreateSubMenuResponse createSubMenuResponse = subMenuService
+            .createSubMenu(createSubMenuRequest, menuId);
 
         //then
-        assertThat(subMenuResponse).isEqualTo(expectMenuResponse);
+        assertThat(createSubMenuResponse).isEqualTo(expectMenuResponse);
     }
 
     @Test
@@ -61,7 +62,7 @@ public class SubMenuServiceTest {
     void subMenuCreationFailureWhenDoesNotExistsMenuTest() {
         //given
         Long menuId = 1L;
-        SubMenuRequest subMenuRequest = SubMenuRequest.builder()
+        CreateSubMenuRequest createSubMenuRequest = CreateSubMenuRequest.builder()
             .title("상의")
             .build();
 
@@ -70,7 +71,7 @@ public class SubMenuServiceTest {
         //then
         assertThrows(AlreadyExistsMenuException.class,
             //when
-            () -> subMenuService.createSubMenu(subMenuRequest, menuId)
+            () -> subMenuService.createSubMenu(createSubMenuRequest, menuId)
         );
     }
 
@@ -79,17 +80,17 @@ public class SubMenuServiceTest {
     void subMenuCreationFailureWhenTitleIsDuplicateTest() {
         //given
         Long menuId = 1L;
-        SubMenuRequest subMenuRequest = SubMenuRequest.builder()
+        CreateSubMenuRequest createSubMenuRequest = CreateSubMenuRequest.builder()
             .title("상의")
             .build();
 
         when(menuDomainService.exists(menuId)).thenReturn(true);
-        when(subMenuDomainService.existsByTitle(subMenuRequest.title())).thenReturn(true);
+        when(subMenuDomainService.existsByTitle(createSubMenuRequest.title())).thenReturn(true);
 
         //then
         assertThrows(DuplicateSubMenuTitleException.class,
             //when
-            () -> subMenuService.createSubMenu(subMenuRequest, menuId)
+            () -> subMenuService.createSubMenu(createSubMenuRequest, menuId)
         );
     }
 }

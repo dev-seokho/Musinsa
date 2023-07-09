@@ -6,7 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.musinsa.menu.biz.menu.dto.request.MenuRequest;
+import com.musinsa.menu.biz.menu.dto.request.CreateMenuRequest;
 import com.musinsa.menu.biz.menu.dto.request.UpdateBannerRequest;
 import com.musinsa.menu.biz.menu.dto.request.UpdateMenuRequest;
 import com.musinsa.menu.biz.menu.service.MenuService;
@@ -40,12 +40,12 @@ public class MenuControllerTest {
     @DisplayName("메뉴 등록 성공")
     void createMenuSuccessTest() throws Exception {
         //given
-        MenuRequest menuRequest = MenuRequest.builder()
+        CreateMenuRequest createMenuRequest = CreateMenuRequest.builder()
             .title("상의")
             .link("/top")
             .build();
 
-        String content = objectMapper.writeValueAsString(menuRequest);
+        String content = objectMapper.writeValueAsString(createMenuRequest);
 
         //when
         mockMvc.perform(post("/menus")
@@ -60,12 +60,12 @@ public class MenuControllerTest {
     @DisplayName("메뉴 등록 실패 - 타이틀이 공백일 때")
     void menuCreationFailureWhenTitleIsBlankTest() throws Exception {
         //given
-        MenuRequest menuRequest = MenuRequest.builder()
+        CreateMenuRequest createMenuRequest = CreateMenuRequest.builder()
             .title(" ")
             .link("/top")
             .build();
 
-        String content = objectMapper.writeValueAsString(menuRequest);
+        String content = objectMapper.writeValueAsString(createMenuRequest);
 
         //when
         mockMvc.perform(post("/menus")
@@ -80,12 +80,12 @@ public class MenuControllerTest {
     @DisplayName("메뉴 등록 실패 - 링크가 공백일 때")
     void menuCreationFailureWhenLinkIsBlankTest() throws Exception {
         //given
-        MenuRequest menuRequest = MenuRequest.builder()
+        CreateMenuRequest createMenuRequest = CreateMenuRequest.builder()
             .title("상의")
             .link(" ")
             .build();
 
-        String content = objectMapper.writeValueAsString(menuRequest);
+        String content = objectMapper.writeValueAsString(createMenuRequest);
 
         //when
         mockMvc.perform(post("/menus")
@@ -100,12 +100,12 @@ public class MenuControllerTest {
     @DisplayName("메뉴 등록 실패 - 링크 형식이 잘못됐을 때")
     void menuCreationFailureWhenLinkIsInvalidTest() throws Exception {
         //given
-        MenuRequest menuRequest = MenuRequest.builder()
+        CreateMenuRequest createMenuRequest = CreateMenuRequest.builder()
             .title("상의")
             .link("top")
             .build();
 
-        String content = objectMapper.writeValueAsString(menuRequest);
+        String content = objectMapper.writeValueAsString(createMenuRequest);
 
         //when
         mockMvc.perform(post("/menus")
@@ -142,12 +142,12 @@ public class MenuControllerTest {
     void menuUpdateFailureWhenTitleIsBlankTest() throws Exception {
         //given
         Long menuId = 1L;
-        UpdateMenuRequest menuRequest = UpdateMenuRequest.builder()
+        UpdateMenuRequest updateMenuRequest = UpdateMenuRequest.builder()
             .title(" ")
             .link("/top")
             .build();
 
-        String content = objectMapper.writeValueAsString(menuRequest);
+        String content = objectMapper.writeValueAsString(updateMenuRequest);
 
         //when
         mockMvc.perform(patch("/menus/" + menuId)
@@ -163,12 +163,12 @@ public class MenuControllerTest {
     void menuUpdateFailureWhenLinkIsBlankTest() throws Exception {
         //given
         Long menuId = 1L;
-        UpdateMenuRequest menuRequest = UpdateMenuRequest.builder()
+        UpdateMenuRequest updateMenuRequest = UpdateMenuRequest.builder()
             .title("상의")
             .link(" ")
             .build();
 
-        String content = objectMapper.writeValueAsString(menuRequest);
+        String content = objectMapper.writeValueAsString(updateMenuRequest);
 
         //when
         mockMvc.perform(patch("/menus/" + menuId)
@@ -184,12 +184,12 @@ public class MenuControllerTest {
     void menuUpdateFailureWhenLinkIsInvalidTest() throws Exception {
         //given
         Long menuId = 1L;
-        UpdateMenuRequest menuRequest = UpdateMenuRequest.builder()
+        UpdateMenuRequest updateMenuRequest = UpdateMenuRequest.builder()
             .title("상의")
             .link("top")
             .build();
 
-        String content = objectMapper.writeValueAsString(menuRequest);
+        String content = objectMapper.writeValueAsString(updateMenuRequest);
 
         //when
         mockMvc.perform(patch("/menus/" + menuId)

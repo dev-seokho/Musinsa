@@ -9,10 +9,13 @@ import static org.mockito.Mockito.when;
 import com.musinsa.menu.biz.menu.domain.entity.Menu;
 import com.musinsa.menu.biz.menu.domain.service.MenuDomainService;
 import com.musinsa.menu.biz.menu.domain.service.SubMenuDomainService;
-import com.musinsa.menu.biz.menu.dto.request.MenuRequest;
+import com.musinsa.menu.biz.menu.dto.request.CreateMenuRequest;
 import com.musinsa.menu.biz.menu.dto.request.UpdateBannerRequest;
 import com.musinsa.menu.biz.menu.dto.request.UpdateMenuRequest;
+import com.musinsa.menu.biz.menu.dto.response.CreateMenuResponse;
 import com.musinsa.menu.biz.menu.dto.response.MenuResponse;
+import com.musinsa.menu.biz.menu.dto.response.UpdateBannerResponse;
+import com.musinsa.menu.biz.menu.dto.response.UpdateMenuResponse;
 import com.musinsa.menu.biz.menu.exception.DuplicateMenuLinkException;
 import com.musinsa.menu.biz.menu.exception.DuplicateMenuTitleException;
 import org.junit.jupiter.api.DisplayName;
@@ -39,43 +42,43 @@ public class MenuServiceTest {
     void createMenuTest() {
         //given
         Long menuId = 1L;
-        MenuRequest menuRequest = MenuRequest.builder()
+        CreateMenuRequest createMenuRequest = CreateMenuRequest.builder()
             .title("상의")
             .link("/link")
             .build();
 
-        when(menuDomainService.existsByTitle(menuRequest.title())).thenReturn(false);
-        when(menuDomainService.existsByLink(menuRequest.link())).thenReturn(false);
+        when(menuDomainService.existsByTitle(createMenuRequest.title())).thenReturn(false);
+        when(menuDomainService.existsByLink(createMenuRequest.link())).thenReturn(false);
         when(menuDomainService.save(any(Menu.class))).thenReturn(menuId);
 
-        MenuResponse expectMenuResponse = MenuResponse.builder()
+        CreateMenuResponse expectCreateMenuResponse = CreateMenuResponse.builder()
             .id(menuId)
-            .title(menuRequest.title())
-            .link(menuRequest.link())
+            .title(createMenuRequest.title())
+            .link(createMenuRequest.link())
             .build();
 
         //when
-        MenuResponse menuResponse = menuService.createMenu(menuRequest);
+        CreateMenuResponse createMenuResponse = menuService.createMenu(createMenuRequest);
 
         //then
-        assertThat(menuResponse).isEqualTo(expectMenuResponse);
+        assertThat(createMenuResponse).isEqualTo(expectCreateMenuResponse);
     }
 
     @Test
     @DisplayName("메뉴 등록 실패 - 메뉴 타이틀이 중복일 때")
     void menuCreationFailureWhenTitleIsDuplicateTest() {
         //given
-        MenuRequest menuRequest = MenuRequest.builder()
+        CreateMenuRequest createMenuRequest = CreateMenuRequest.builder()
             .title("상의")
             .link("/link")
             .build();
 
-        when(menuDomainService.existsByTitle(menuRequest.title())).thenReturn(true);
+        when(menuDomainService.existsByTitle(createMenuRequest.title())).thenReturn(true);
 
         //then
         assertThrows(DuplicateMenuTitleException.class,
             //when
-            () -> menuService.createMenu(menuRequest)
+            () -> menuService.createMenu(createMenuRequest)
         );
     }
 
@@ -83,18 +86,18 @@ public class MenuServiceTest {
     @DisplayName("메뉴 등록 실패 - 메뉴 링크가 중복일 때")
     void menuCreationFailureWhenLinkIsDuplicateTest() {
         //given
-        MenuRequest menuRequest = MenuRequest.builder()
+        CreateMenuRequest createMenuRequest = CreateMenuRequest.builder()
             .title("상의")
             .link("/link")
             .build();
 
-        when(menuDomainService.existsByTitle(menuRequest.title())).thenReturn(false);
-        when(menuDomainService.existsByLink(menuRequest.link())).thenReturn(true);
+        when(menuDomainService.existsByTitle(createMenuRequest.title())).thenReturn(false);
+        when(menuDomainService.existsByLink(createMenuRequest.link())).thenReturn(true);
 
         //then
         assertThrows(DuplicateMenuLinkException.class,
             //when
-            () -> menuService.createMenu(menuRequest)
+            () -> menuService.createMenu(createMenuRequest)
         );
     }
 
@@ -118,17 +121,17 @@ public class MenuServiceTest {
         when(menuDomainService.existsByLink(updateMenuRequest.link())).thenReturn(false);
         when(menuDomainService.get(menuId)).thenReturn(menu);
 
-        MenuResponse expectMenuResponse = MenuResponse.builder()
+        UpdateMenuResponse expectUpdateMenuResponse = UpdateMenuResponse.builder()
             .id(menuId)
             .title(updateMenuRequest.title())
             .link(updateMenuRequest.link())
             .build();
 
         //when
-        MenuResponse menuResponse = menuService.updateMenu(updateMenuRequest, menuId);
+        UpdateMenuResponse updateMenuResponse = menuService.updateMenu(updateMenuRequest, menuId);
 
         //then
-        assertThat(menuResponse).isEqualTo(expectMenuResponse);
+        assertThat(updateMenuResponse).isEqualTo(expectUpdateMenuResponse);
     }
 
     @Test
@@ -202,7 +205,7 @@ public class MenuServiceTest {
             .link("/top")
             .build();
 
-        MenuResponse expectMenuResponse = MenuResponse.builder()
+        UpdateBannerResponse expectUpdateBannerResponse = UpdateBannerResponse.builder()
             .id(menuId)
             .title(menu.getTitle())
             .link(menu.getLink())
@@ -212,9 +215,10 @@ public class MenuServiceTest {
         when(menuDomainService.get(menuId)).thenReturn(menu);
 
         //when
-        MenuResponse menuResponse = menuService.updateBanner(updateBannerRequest, menuId);
+        UpdateBannerResponse updateBannerResponse = menuService
+            .updateBanner(updateBannerRequest, menuId);
 
         //then
-        assertThat(menuResponse).isEqualTo(expectMenuResponse);
+        assertThat(updateBannerResponse).isEqualTo(expectUpdateBannerResponse);
     }
 }

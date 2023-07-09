@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 
 @Builder
-public record MenuRequest(
+public record CreateMenuRequest(
     @NotBlank(message = "메뉴 타이틀은 공백일 수 없습니다.")
     String title,
     @NotBlank(message = "메뉴 링크는 공백일 수 없습니다.")

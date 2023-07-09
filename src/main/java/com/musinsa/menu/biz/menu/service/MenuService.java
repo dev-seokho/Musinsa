@@ -4,10 +4,13 @@ import com.musinsa.menu.biz.menu.domain.entity.Menu;
 import com.musinsa.menu.biz.menu.domain.entity.SubMenu;
 import com.musinsa.menu.biz.menu.domain.service.MenuDomainService;
 import com.musinsa.menu.biz.menu.domain.service.SubMenuDomainService;
-import com.musinsa.menu.biz.menu.dto.request.MenuRequest;
+import com.musinsa.menu.biz.menu.dto.request.CreateMenuRequest;
 import com.musinsa.menu.biz.menu.dto.request.UpdateBannerRequest;
 import com.musinsa.menu.biz.menu.dto.request.UpdateMenuRequest;
+import com.musinsa.menu.biz.menu.dto.response.CreateMenuResponse;
 import com.musinsa.menu.biz.menu.dto.response.MenuResponse;
+import com.musinsa.menu.biz.menu.dto.response.UpdateBannerResponse;
+import com.musinsa.menu.biz.menu.dto.response.UpdateMenuResponse;
 import com.musinsa.menu.biz.menu.exception.DuplicateMenuLinkException;
 import com.musinsa.menu.biz.menu.exception.DuplicateMenuTitleException;
 import java.util.List;
@@ -23,30 +26,36 @@ public class MenuService {
     private final SubMenuDomainService subMenuDomainService;
 
     @Transactional
-    public MenuResponse createMenu(MenuRequest menuRequest) {
+    public CreateMenuResponse createMenu(CreateMenuRequest createMenuRequest) {
         Menu menu = Menu.builder()
-            .title(menuRequest.title())
-            .link(menuRequest.link())
+            .title(createMenuRequest.title())
+            .link(createMenuRequest.link())
             .build();
 
-        if (menuDomainService.existsByTitle(menuRequest.title())) {
+        if (menuDomainService.existsByTitle(createMenuRequest.title())) {
             throw new DuplicateMenuTitleException("메뉴 타이틀 중복입니다.");
         }
 
-        if (menuDomainService.existsByLink(menuRequest.link())) {
+        if (menuDomainService.existsByLink(createMenuRequest.link())) {
             throw new DuplicateMenuLinkException("메뉴 링크 중복입니다.");
         }
 
         Long menuId = menuDomainService.save(menu);
-        return MenuResponse.builder()
+        return CreateMenuResponse.builder()
             .id(menuId)
             .title(menu.getTitle())
             .link(menu.getLink())
             .build();
     }
 
+    @Transactional(readOnly = true)
+    public MenuResponse getMenu(Long menuId) {
+
+        return MenuResponse.builder().build();
+    }
+
     @Transactional
-    public MenuResponse updateMenu(UpdateMenuRequest updateMenuRequest, Long menuId) {
+    public UpdateMenuResponse updateMenu(UpdateMenuRequest updateMenuRequest, Long menuId) {
         if (menuDomainService.existsByTitle(updateMenuRequest.title())) {
             throw new DuplicateMenuTitleException("메뉴 타이틀 중복입니다.");
         }
@@ -58,7 +67,7 @@ public class MenuService {
         Menu menu = menuDomainService.get(menuId);
         menu.updateMenu(updateMenuRequest.title(), updateMenuRequest.link());
 
-        return MenuResponse.builder()
+        return UpdateMenuResponse.builder()
             .id(menu.getId())
             .title(menu.getTitle())
             .link(menu.getLink())
@@ -75,11 +84,11 @@ public class MenuService {
     }
 
     @Transactional
-    public MenuResponse updateBanner(UpdateBannerRequest updateBannerRequest, Long menuId) {
+    public UpdateBannerResponse updateBanner(UpdateBannerRequest updateBannerRequest, Long menuId) {
         Menu menu = menuDomainService.get(menuId);
         menu.updateBannerImageUrl(updateBannerRequest.bannerImageUrl());
 
-        return MenuResponse.builder()
+        return UpdateBannerResponse.builder()
             .id(menu.getId())
             .title(menu.getTitle())
             .link(menu.getLink())

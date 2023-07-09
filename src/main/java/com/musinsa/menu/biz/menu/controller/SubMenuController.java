@@ -1,7 +1,7 @@
 package com.musinsa.menu.biz.menu.controller;
 
-import com.musinsa.menu.biz.menu.dto.request.SubMenuRequest;
-import com.musinsa.menu.biz.menu.dto.response.SubMenuResponse;
+import com.musinsa.menu.biz.menu.dto.request.CreateSubMenuRequest;
+import com.musinsa.menu.biz.menu.dto.response.CreateSubMenuResponse;
 import com.musinsa.menu.biz.menu.service.SubMenuService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,11 +21,12 @@ public class SubMenuController {
     private final SubMenuService subMenuService;
 
     @PostMapping("/{menuId}/sub-menus")
-    public ResponseEntity<SubMenuResponse> createSubMenu(
-        @RequestBody @Valid SubMenuRequest subMenuRequest,
+    public ResponseEntity<CreateSubMenuResponse> createSubMenu(
+        @RequestBody @Valid CreateSubMenuRequest createSubMenuRequest,
         @PathVariable Long menuId
     ) {
-        SubMenuResponse subMenuResponse = subMenuService.createSubMenu(subMenuRequest, menuId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(subMenuResponse);
+        CreateSubMenuResponse createSubMenuResponse = subMenuService
+            .createSubMenu(createSubMenuRequest, menuId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createSubMenuResponse);
     }
 }
