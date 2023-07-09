@@ -54,6 +54,7 @@ public class GlobalExceptionHandler {
         log.error(e.getMessage(), e);
         return new ErrorMessage(e.getMessage(), getSimpleName(e));
     }
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(NoSuchMenuException.class)
     public ErrorMessage handleNoSuchMenuException(

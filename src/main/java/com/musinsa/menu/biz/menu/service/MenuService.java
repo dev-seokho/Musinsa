@@ -56,8 +56,7 @@ public class MenuService {
         List<SubMenu> subMenus = menu.getSubMenus();
 
         List<SubMenuResponse> subMenuResponses = new ArrayList<>();
-        for (SubMenu subMenu : subMenus
-        ) {
+        for (SubMenu subMenu : subMenus) {
             subMenuResponses.add(
                 SubMenuResponse.builder()
                     .id(subMenu.getId())
