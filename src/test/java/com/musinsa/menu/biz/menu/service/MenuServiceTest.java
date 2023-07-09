@@ -10,6 +10,7 @@ import com.musinsa.menu.biz.menu.domain.entity.Menu;
 import com.musinsa.menu.biz.menu.domain.service.MenuDomainService;
 import com.musinsa.menu.biz.menu.domain.service.SubMenuDomainService;
 import com.musinsa.menu.biz.menu.dto.request.MenuRequest;
+import com.musinsa.menu.biz.menu.dto.request.UpdateBannerRequest;
 import com.musinsa.menu.biz.menu.dto.request.UpdateMenuRequest;
 import com.musinsa.menu.biz.menu.dto.response.MenuResponse;
 import com.musinsa.menu.biz.menu.exception.DuplicateMenuLinkException;
@@ -183,5 +184,37 @@ public class MenuServiceTest {
 
         //then
         verify(menuDomainService).get(menuId);
+    }
+
+    @Test
+    @DisplayName("배너 추가 성공")
+    void updateBannerTest() {
+        //given
+        Long menuId = 1L;
+        String banner = "https://image.msscdn.net/mfile_s01/_brand/free_medium/musinsastandard.png";
+        UpdateBannerRequest updateBannerRequest = UpdateBannerRequest.builder()
+            .bannerImageUrl(banner)
+            .build();
+
+        Menu menu = Menu.builder()
+            .id(menuId)
+            .title("상의")
+            .link("/top")
+            .build();
+
+        MenuResponse expectMenuResponse = MenuResponse.builder()
+            .id(menuId)
+            .title(menu.getTitle())
+            .link(menu.getLink())
+            .bannerImageUrl(updateBannerRequest.bannerImageUrl())
+            .build();
+
+        when(menuDomainService.get(menuId)).thenReturn(menu);
+
+        //when
+        MenuResponse menuResponse = menuService.updateBanner(updateBannerRequest, menuId);
+
+        //then
+        assertThat(menuResponse).isEqualTo(expectMenuResponse);
     }
 }
