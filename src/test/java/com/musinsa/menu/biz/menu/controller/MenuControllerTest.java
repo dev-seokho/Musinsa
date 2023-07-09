@@ -232,4 +232,24 @@ public class MenuControllerTest {
             // then
             .andExpect(status().isOk());
     }
+
+    @Test
+    @DisplayName("배너 추가 실패 - 배너가 공백일 때")
+    void bannerUpdateFailureWhenBannerImageUrlIsBlankTest() throws Exception {
+        //given
+        Long menuId = 1L;
+        UpdateBannerRequest updateBannerRequest = UpdateBannerRequest.builder()
+            .bannerImageUrl(" ")
+            .build();
+
+        String content = objectMapper.writeValueAsString(updateBannerRequest);
+
+        //when
+        mockMvc.perform(patch("/menus/" + menuId + "/banner")
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+            // then
+            .andExpect(status().isBadRequest());
+    }
 }
