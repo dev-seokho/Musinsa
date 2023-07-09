@@ -7,6 +7,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.musinsa.menu.biz.menu.domain.entity.Menu;
+import com.musinsa.menu.biz.menu.domain.entity.SubMenu;
 import com.musinsa.menu.biz.menu.domain.service.MenuDomainService;
 import com.musinsa.menu.biz.menu.domain.service.SubMenuDomainService;
 import com.musinsa.menu.biz.menu.dto.request.CreateMenuRequest;
@@ -14,16 +15,19 @@ import com.musinsa.menu.biz.menu.dto.request.UpdateBannerRequest;
 import com.musinsa.menu.biz.menu.dto.request.UpdateMenuRequest;
 import com.musinsa.menu.biz.menu.dto.response.CreateMenuResponse;
 import com.musinsa.menu.biz.menu.dto.response.MenuResponse;
+import com.musinsa.menu.biz.menu.dto.response.SubMenuResponse;
 import com.musinsa.menu.biz.menu.dto.response.UpdateBannerResponse;
 import com.musinsa.menu.biz.menu.dto.response.UpdateMenuResponse;
 import com.musinsa.menu.biz.menu.exception.DuplicateMenuLinkException;
 import com.musinsa.menu.biz.menu.exception.DuplicateMenuTitleException;
+import java.util.ArrayList;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
 public class MenuServiceTest {
@@ -99,6 +103,50 @@ public class MenuServiceTest {
             //when
             () -> menuService.createMenu(createMenuRequest)
         );
+    }
+
+    @Test
+    @DisplayName("메뉴 조회 성공")
+    void getMenuTest() {
+        //given
+        Long menuId = 1L;
+        List<SubMenu> subMenus = new ArrayList<>();
+        SubMenu subMenu1 = SubMenu.builder()
+            .id(1L)
+            .menuId(menuId)
+            .title("Submenu 1")
+            .build();
+
+        SubMenu subMenu2 = SubMenu.builder()
+            .id(2L)
+            .menuId(menuId)
+            .title("Submenu 2")
+            .build();
+
+        subMenus.add(subMenu1);
+        subMenus.add(subMenu2);
+
+        Menu menu = Menu.builder()
+            .id(menuId)
+            .title("상의")
+            .link("/top")
+            .bannerImageUrl("http://example.com/banner.jpg")
+            .subMenus(subMenus)
+            .build();
+
+        when(menuDomainService.get(menuId)).thenReturn(menu);
+
+        //when
+        MenuResponse menuResponse = menuService.getMenu(menuId);
+
+        //then
+        assertThat(menuResponse.id()).isEqualTo(menuId);
+        assertThat(menuResponse.title()).isEqualTo(menu.getTitle());
+        assertThat(menuResponse.link()).isEqualTo(menu.getLink());
+        assertThat(menuResponse.bannerImageUrl()).isEqualTo(menu.getBannerImageUrl());
+
+        List<SubMenuResponse> subMenuResponses = menuResponse.subMenuResponses();
+        assertThat(subMenuResponses.size()).isEqualTo(2);
     }
 
     @Test
