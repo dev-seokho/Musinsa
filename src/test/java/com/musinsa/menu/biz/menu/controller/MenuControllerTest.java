@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.musinsa.menu.biz.menu.dto.request.MenuRequest;
+import com.musinsa.menu.biz.menu.dto.request.UpdateBannerRequest;
 import com.musinsa.menu.biz.menu.dto.request.UpdateMenuRequest;
 import com.musinsa.menu.biz.menu.service.MenuService;
 import org.junit.jupiter.api.DisplayName;
@@ -207,6 +208,27 @@ public class MenuControllerTest {
 
         //when
         mockMvc.perform(delete("/menus/" + menuId))
+            // then
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("배너 추가 성공")
+    void updateBannerSuccessTest() throws Exception {
+        //given
+        String banner = "https://image.msscdn.net/mfile_s01/_brand/free_medium/musinsastandard.png";
+        Long menuId = 1L;
+        UpdateBannerRequest updateBannerRequest = UpdateBannerRequest.builder()
+            .bannerImageUrl(banner)
+            .build();
+
+        String content = objectMapper.writeValueAsString(updateBannerRequest);
+
+        //when
+        mockMvc.perform(patch("/menus/" + menuId + "/banner")
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
             // then
             .andExpect(status().isOk());
     }
