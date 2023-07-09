@@ -6,7 +6,9 @@ import lombok.Builder;
 public record MenuResponse(
     Long id,
     String title,
-    String link
+    String link,
+    String bannerImageUrl
+
 ) {
 
 }

@@ -5,6 +5,7 @@ import com.musinsa.menu.biz.menu.domain.entity.SubMenu;
 import com.musinsa.menu.biz.menu.domain.service.MenuDomainService;
 import com.musinsa.menu.biz.menu.domain.service.SubMenuDomainService;
 import com.musinsa.menu.biz.menu.dto.request.MenuRequest;
+import com.musinsa.menu.biz.menu.dto.request.UpdateBannerRequest;
 import com.musinsa.menu.biz.menu.dto.request.UpdateMenuRequest;
 import com.musinsa.menu.biz.menu.dto.response.MenuResponse;
 import com.musinsa.menu.biz.menu.exception.DuplicateMenuLinkException;
@@ -61,6 +62,7 @@ public class MenuService {
             .id(menu.getId())
             .title(menu.getTitle())
             .link(menu.getLink())
+            .bannerImageUrl(menu.getBannerImageUrl())
             .build();
     }
 
@@ -70,5 +72,18 @@ public class MenuService {
         List<SubMenu> subMenus = menu.getSubMenus();
         subMenuDomainService.deleteAll(subMenus);
         menuDomainService.delete(menu);
+    }
+
+    @Transactional
+    public MenuResponse updateBanner(UpdateBannerRequest updateBannerRequest, Long menuId) {
+        Menu menu = menuDomainService.get(menuId);
+        menu.updateBannerImageUrl(updateBannerRequest.bannerImageUrl());
+
+        return MenuResponse.builder()
+            .id(menu.getId())
+            .title(menu.getTitle())
+            .link(menu.getLink())
+            .bannerImageUrl(menu.getBannerImageUrl())
+            .build();
     }
 }

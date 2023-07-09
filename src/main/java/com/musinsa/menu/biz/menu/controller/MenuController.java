@@ -1,6 +1,7 @@
 package com.musinsa.menu.biz.menu.controller;
 
 import com.musinsa.menu.biz.menu.dto.request.MenuRequest;
+import com.musinsa.menu.biz.menu.dto.request.UpdateBannerRequest;
 import com.musinsa.menu.biz.menu.dto.request.UpdateMenuRequest;
 import com.musinsa.menu.biz.menu.dto.response.MenuResponse;
 import com.musinsa.menu.biz.menu.service.MenuService;
@@ -33,10 +34,10 @@ public class MenuController {
 
     @PatchMapping("/{menuId}")
     public ResponseEntity<MenuResponse> updateMenu(
-        @RequestBody @Valid UpdateMenuRequest menuRequest,
+        @RequestBody @Valid UpdateMenuRequest updateMenuRequest,
         @PathVariable Long menuId
     ) {
-        MenuResponse menuResponse = menuService.updateMenu(menuRequest, menuId);
+        MenuResponse menuResponse = menuService.updateMenu(updateMenuRequest, menuId);
         return ResponseEntity.status(HttpStatus.OK).body(menuResponse);
     }
 
@@ -46,5 +47,14 @@ public class MenuController {
     ) {
         menuService.deleteMenu(menuId);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PatchMapping("/{menuId}/banner")
+    public ResponseEntity<MenuResponse> updateBanner(
+        @RequestBody @Valid UpdateBannerRequest updateBannerRequest,
+        @PathVariable Long menuId
+    ) {
+        MenuResponse menuResponse = menuService.updateBanner(updateBannerRequest, menuId);
+        return ResponseEntity.status(HttpStatus.OK).body(menuResponse);
     }
 }

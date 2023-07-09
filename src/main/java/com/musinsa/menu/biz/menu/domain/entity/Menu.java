@@ -39,6 +39,9 @@ public class Menu {
     @Column(name = "link", nullable = false, unique = true)
     private String link;
 
+    @Column(name = "banner_image_url")
+    private String bannerImageUrl;
+
     @Column(name = "created_at", nullable = false)
     @CreatedDate
     private LocalDateTime createdAt;
@@ -51,12 +54,12 @@ public class Menu {
     @OneToMany(mappedBy = "menu")
     private List<SubMenu> subMenus = new ArrayList<>();
 
-    @Builder.Default
-    @OneToMany(mappedBy = "menu")
-    private List<Banner> banners = new ArrayList<>();
-
     public void updateMenu(String title, String link) {
         this.title = title;
         this.link = link;
+    }
+
+    public void updateBannerImageUrl(String bannerImageUrl) {
+        this.bannerImageUrl = bannerImageUrl;
     }
 }
