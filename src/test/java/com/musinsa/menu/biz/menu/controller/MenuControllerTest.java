@@ -238,7 +238,7 @@ public class MenuControllerTest {
         String content = objectMapper.writeValueAsString(updateBannerRequest);
 
         //when
-        mockMvc.perform(patch("/menus/" + menuId + "/banner")
+        mockMvc.perform(patch("/menus/" + menuId + "/banners")
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -258,7 +258,7 @@ public class MenuControllerTest {
         String content = objectMapper.writeValueAsString(updateBannerRequest);
 
         //when
-        mockMvc.perform(patch("/menus/" + menuId + "/banner")
+        mockMvc.perform(patch("/menus/" + menuId + "/banners")
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))

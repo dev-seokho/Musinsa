@@ -14,7 +14,7 @@ import com.musinsa.menu.biz.menu.dto.request.CreateMenuRequest;
 import com.musinsa.menu.biz.menu.dto.request.UpdateBannerRequest;
 import com.musinsa.menu.biz.menu.dto.request.UpdateMenuRequest;
 import com.musinsa.menu.biz.menu.dto.response.CreateMenuResponse;
-import com.musinsa.menu.biz.menu.dto.response.MenuResponse;
+import com.musinsa.menu.biz.menu.dto.response.MenuInfoResponse;
 import com.musinsa.menu.biz.menu.dto.response.SubMenuResponse;
 import com.musinsa.menu.biz.menu.dto.response.UpdateBannerResponse;
 import com.musinsa.menu.biz.menu.dto.response.UpdateMenuResponse;
@@ -137,15 +137,15 @@ public class MenuServiceTest {
         when(menuDomainService.get(menuId)).thenReturn(menu);
 
         //when
-        MenuResponse menuResponse = menuService.getMenu(menuId);
+        MenuInfoResponse menuInfoResponse = menuService.getMenu(menuId);
 
         //then
-        assertThat(menuResponse.id()).isEqualTo(menuId);
-        assertThat(menuResponse.title()).isEqualTo(menu.getTitle());
-        assertThat(menuResponse.link()).isEqualTo(menu.getLink());
-        assertThat(menuResponse.bannerImageUrl()).isEqualTo(menu.getBannerImageUrl());
+        assertThat(menuInfoResponse.id()).isEqualTo(menuId);
+        assertThat(menuInfoResponse.title()).isEqualTo(menu.getTitle());
+        assertThat(menuInfoResponse.link()).isEqualTo(menu.getLink());
+        assertThat(menuInfoResponse.bannerImageUrl()).isEqualTo(menu.getBannerImageUrl());
 
-        List<SubMenuResponse> subMenuResponses = menuResponse.subMenuResponses();
+        List<SubMenuResponse> subMenuResponses = menuInfoResponse.subMenuResponses();
         assertThat(subMenuResponses.size()).isEqualTo(2);
     }
 
