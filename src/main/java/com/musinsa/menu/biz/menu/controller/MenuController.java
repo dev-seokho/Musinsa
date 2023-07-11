@@ -50,7 +50,6 @@ public class MenuController {
         return ResponseEntity.status(HttpStatus.OK).body(menuResponses);
     }
 
-
     @GetMapping("/{menuId}")
     public ResponseEntity<MenuInfoResponse> getMenu(
         @PathVariable Long menuId
