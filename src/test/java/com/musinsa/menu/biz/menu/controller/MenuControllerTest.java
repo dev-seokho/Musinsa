@@ -118,6 +118,15 @@ public class MenuControllerTest {
     }
 
     @Test
+    @DisplayName("메뉴 조회 성공")
+    void getMenusSuccessTest() throws Exception {
+        //when
+        mockMvc.perform(get("/menus"))
+            //then
+            .andExpect(status().isOk());
+    }
+
+    @Test
     @DisplayName("단일 메뉴 조회 성공")
     void getMenuSuccessTest() throws Exception {
         //given
