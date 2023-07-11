@@ -1,5 +1,6 @@
 package com.musinsa.menu.biz.menu.service;
 
+import com.musinsa.menu.biz.menu.code.MenuSort;
 import com.musinsa.menu.biz.menu.domain.entity.Menu;
 import com.musinsa.menu.biz.menu.domain.entity.SubMenu;
 import com.musinsa.menu.biz.menu.domain.service.MenuDomainService;
@@ -8,6 +9,7 @@ import com.musinsa.menu.biz.menu.dto.request.CreateMenuRequest;
 import com.musinsa.menu.biz.menu.dto.request.UpdateBannerRequest;
 import com.musinsa.menu.biz.menu.dto.request.UpdateMenuRequest;
 import com.musinsa.menu.biz.menu.dto.response.CreateMenuResponse;
+import com.musinsa.menu.biz.menu.dto.response.MenuInfoResponse;
 import com.musinsa.menu.biz.menu.dto.response.MenuResponse;
 import com.musinsa.menu.biz.menu.dto.response.SubMenuResponse;
 import com.musinsa.menu.biz.menu.dto.response.UpdateBannerResponse;
@@ -17,6 +19,9 @@ import com.musinsa.menu.biz.menu.exception.DuplicateMenuTitleException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,7 +56,21 @@ public class MenuService {
     }
 
     @Transactional(readOnly = true)
-    public MenuResponse getMenu(Long menuId) {
+    public Slice<MenuResponse> getMenus(int page, int size, MenuSort menuSort) {
+        Sort sort = getMenuSortCondition(menuSort);
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+        Slice<Menu> menus = menuDomainService.getMenus(pageRequest);
+
+        return menus.map(menu -> MenuResponse.builder()
+            .id(menu.getId())
+            .title(menu.getTitle())
+            .link(menu.getLink())
+            .bannerImageUrl(menu.getBannerImageUrl())
+            .build());
+    }
+
+    @Transactional(readOnly = true)
+    public MenuInfoResponse getMenu(Long menuId) {
         Menu menu = menuDomainService.get(menuId);
         List<SubMenu> subMenus = menu.getSubMenus();
 
@@ -66,7 +85,7 @@ public class MenuService {
             );
         }
 
-        return MenuResponse.builder()
+        return MenuInfoResponse.builder()
             .id(menu.getId())
             .title(menu.getTitle())
             .link(menu.getLink())
@@ -115,5 +134,10 @@ public class MenuService {
             .link(menu.getLink())
             .bannerImageUrl(menu.getBannerImageUrl())
             .build();
+    }
+
+    private Sort getMenuSortCondition(MenuSort menuSort) {
+        menuSort = menuSort == null ? MenuSort.CREATED_AT : menuSort;
+        return MenuSort.findSortCondition(menuSort.getOrderBy());
     }
 }

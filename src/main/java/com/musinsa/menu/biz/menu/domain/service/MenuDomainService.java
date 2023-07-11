@@ -4,6 +4,8 @@ import com.musinsa.menu.biz.menu.domain.entity.Menu;
 import com.musinsa.menu.biz.menu.domain.repository.MenuRepository;
 import com.musinsa.menu.biz.menu.exception.NoSuchMenuException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,5 +42,9 @@ public class MenuDomainService {
         return menuRepository.findById(id).orElseThrow(
             () -> new NoSuchMenuException("존재하지 않는 메뉴 ID 입니다.")
         );
+    }
+
+    public Slice<Menu> getMenus(final PageRequest pageRequest) {
+        return menuRepository.findSliceBy(pageRequest);
     }
 }
