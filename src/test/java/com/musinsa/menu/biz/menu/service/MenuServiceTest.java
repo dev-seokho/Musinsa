@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.musinsa.menu.biz.menu.code.MenuSort;
 import com.musinsa.menu.biz.menu.domain.entity.Menu;
 import com.musinsa.menu.biz.menu.domain.entity.SubMenu;
 import com.musinsa.menu.biz.menu.domain.service.MenuDomainService;
@@ -15,6 +16,7 @@ import com.musinsa.menu.biz.menu.dto.request.UpdateBannerRequest;
 import com.musinsa.menu.biz.menu.dto.request.UpdateMenuRequest;
 import com.musinsa.menu.biz.menu.dto.response.CreateMenuResponse;
 import com.musinsa.menu.biz.menu.dto.response.MenuInfoResponse;
+import com.musinsa.menu.biz.menu.dto.response.MenuResponse;
 import com.musinsa.menu.biz.menu.dto.response.SubMenuResponse;
 import com.musinsa.menu.biz.menu.dto.response.UpdateBannerResponse;
 import com.musinsa.menu.biz.menu.dto.response.UpdateMenuResponse;
@@ -28,6 +30,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
+import org.springframework.data.domain.Sort;
 
 @ExtendWith(MockitoExtension.class)
 public class MenuServiceTest {
@@ -107,6 +113,41 @@ public class MenuServiceTest {
 
     @Test
     @DisplayName("메뉴 조회 성공")
+    void getMenusTest() {
+        //given
+        int page = 0;
+        int size = 10;
+        MenuSort menuSort = MenuSort.CREATED_AT;
+
+        Sort expectedSort = MenuSort.findSortCondition(menuSort.getOrderBy());
+        PageRequest expectedPageRequest = PageRequest.of(page, size, expectedSort);
+        Slice<Menu> fakeMenus = createFakeMenus();
+
+        when(menuDomainService.getMenus(expectedPageRequest)).thenReturn(fakeMenus);
+
+        //when
+        Slice<MenuResponse> menuResponses = menuService.getMenus(page, size, menuSort);
+
+        //then
+        assertThat(menuResponses).isNotNull();
+        assertThat(menuResponses).hasSize(fakeMenus.getNumberOfElements());
+
+        List<MenuResponse> resultItems = menuResponses.getContent();
+        for (int i = 0; i < resultItems.size(); i++) {
+            MenuResponse menuResponse = resultItems.get(i);
+            Menu fakeMenu = fakeMenus.getContent().get(i);
+
+            assertThat(menuResponse.id()).isEqualTo(fakeMenu.getId());
+            assertThat(menuResponse.title()).isEqualTo(fakeMenu.getTitle());
+            assertThat(menuResponse.link()).isEqualTo(fakeMenu.getLink());
+            assertThat(menuResponse.bannerImageUrl()).isEqualTo(fakeMenu.getBannerImageUrl());
+        }
+
+        verify(menuDomainService).getMenus(expectedPageRequest);
+    }
+
+    @Test
+    @DisplayName("단일 메뉴 조회 성공")
     void getMenuTest() {
         //given
         Long menuId = 1L;
@@ -268,5 +309,29 @@ public class MenuServiceTest {
 
         //then
         assertThat(updateBannerResponse).isEqualTo(expectUpdateBannerResponse);
+    }
+
+    private Slice<Menu> createFakeMenus() {
+        List<Menu> fakeMenuList = new ArrayList<>();
+
+        Menu menu1 = Menu.builder()
+            .id(1L)
+            .title("상의")
+            .link("/top")
+            .bannerImageUrl("http://example.com/banner.jpg")
+            .build();
+        fakeMenuList.add(menu1);
+
+        Menu menu2 = Menu.builder()
+            .id(2L)
+            .title("하의")
+            .link("/bottom")
+            .bannerImageUrl("http://example.com/banner.jpg")
+            .build();
+
+        fakeMenuList.add(menu2);
+
+        Slice<Menu> fakeMenus = new SliceImpl<>(fakeMenuList);
+        return fakeMenus;
     }
 }
