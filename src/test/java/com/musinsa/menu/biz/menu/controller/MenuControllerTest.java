@@ -127,6 +127,15 @@ public class MenuControllerTest {
     }
 
     @Test
+    @DisplayName("메뉴 조회 성공 - 쿼리스트링 사용하여 페이지네이션")
+    void getMenusQueryStringSuccessTest() throws Exception {
+        //when
+        mockMvc.perform(get("/menus?page=1&size=1"))
+            //then
+            .andExpect(status().isOk());
+    }
+
+    @Test
     @DisplayName("단일 메뉴 조회 성공")
     void getMenuSuccessTest() throws Exception {
         //given
