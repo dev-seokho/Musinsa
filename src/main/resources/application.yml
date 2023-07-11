@@ -15,4 +15,5 @@ spring:
     show-sql: true
     hibernate:
       format_sql: true
-      ddl-auto: none
+      # Todo : 운영계에서는 create 옵션 꺼주기
+      ddl-auto: create
