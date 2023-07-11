@@ -1,5 +1,6 @@
 package com.musinsa.menu.biz.menu.domain.menuRepository;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.boot.jdbc.EmbeddedDatabaseConnection.H2;
@@ -11,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.test.context.ActiveProfiles;
 
 @AutoConfigureTestDatabase(connection = H2)
@@ -83,5 +86,18 @@ public class MenuRepositoryTest {
 
         //then
         assertFalse(existsLink);
+    }
+
+    @Test
+    @DisplayName("메뉴 슬라이스 리스트 사이즈 체크")
+    public void testFindSliceBy() {
+        //given
+        PageRequest pageRequest = PageRequest.of(0, 10);
+
+        //when
+        Slice<Menu> menuSlice = menuRepository.findSliceBy(pageRequest);
+
+        //then
+        assertThat(menuSlice.getSize()).isEqualTo(10);
     }
 }
