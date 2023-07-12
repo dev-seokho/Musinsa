@@ -8,11 +8,30 @@
 - Gradle
 - MySQL
 
-# 사용 방법 및 주의 사항
+# 실행 방법 및 주의 사항
+- 실행 방법
+  - `MySQL`과 함께 인텔리제이에서 실행시키기
+    - `resources/application.yml`에 `MySQL`에 대한 로컬 설정값을 입력해 주거나 인텔리제이 실행 시에 설정에서 환경 변수를 함께 넘겨주면 작동합니다. **DB가 연결되지 않으면 API를 사용할 수 없습니다.**
+      - `MYSQL_URL`
+      - `MYSQL_PORT`
+      - `MYSQL_DBNAME`
+      - `MYSQL_USERNAME`
+      - `MYSQL_PASSWORD`
+  - Active profiles는 `local`로 설정해주시면 됩니다.
+  - <img width="80%" alt="build" src="https://github.com/dev-seokho/Musinsa/assets/56547148/a19c1db8-4088-4565-9775-24968ed1b048">
+  - 로컬 테스트 환경이기 때문에 초기 DB 세팅은 `resources/application.yml`의 `ddl-auto: create` 값으로 설정됩니다.
 
+
+- 테스트 코드 동작 시키기
+  - 테스트 코드는 유닛 테스트로 진행했기 때문에 바로 실행이 가능합니다.
+  - `Repository Layer` 에서는 `@DataJpaTest` 와 함께 `H2 DB`가 사용됩니다.
+  - 인텔리제이에서 테스트 폴더를 실행해주시면 동작합니다.
+  - <img width="70%" alt="test" src="https://github.com/dev-seokho/Musinsa/assets/56547148/3357ff35-d856-486c-aacc-78477e346050">
+  - `./gradle clean build` 를 사용해서 빌드 해본다면 `Jacoco` 테스트 커버리지가 70프로 이상인 것을 확인해 보실 수 있습니다.
 
 # 프로젝트 중점사항
 - Jacoco를 활용해서 Controller, Service, Repository Layer 테스트 커버리지를 70프로 이상 유지합니다.
+  - 테스트 피라미드에 기반하여 유닛테스트를 작성합니다.
 - 도메인 디렉토리 구조를 프로젝트에 적용합니다.
 - `@RestControllerAdvice`와 `@ExceptionHandler`를 활용하여 예외를 관리합니다.
 - Google Code Style을 준수합니다.
@@ -75,3 +94,5 @@
   - 서브 메뉴 타이틀은 공백일 수 없습니다.
 
 # 데이터베이스 ERD
+<img width="80%" alt="erd" src="https://github.com/dev-seokho/Musinsa/assets/56547148/5c0ca655-64a9-4dc4-8f58-4a76232deebb">
+
